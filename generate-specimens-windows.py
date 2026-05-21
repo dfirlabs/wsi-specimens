@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 # pylint: disable=invalid-name
 """Script to generate Windows shell item test files.
 
@@ -15,17 +14,20 @@ from win32com.shell import shell
 from win32com.shell import shellcon
 
 
-class WindowsShellItemGenerator(object):
+class WindowsShellItemGenerator:
   """Windows shell item generator."""
 
   # pylint: disable=redefined-outer-name
 
-  def __init__(self):
-    """Initializes a Windows shell item generator."""
-    super(WindowsShellItemGenerator, self).__init__()
+  def __init__(self, specimens_path):
+    """Initializes a Windows shell item generator.
+
+    Args:
+      specimens_path (str): path of the directory where to store the generated specimens.
+    """
+    super().__init__()
     self._desktop_shell_folder = shell.SHGetDesktopFolder()
-    self._specimens_path = os.path.join(os.getcwd(), 'specimens')
-    os.makedirs(self._specimens_path)
+    self._specimens_path = specimens_path
 
   def GetItemListByPath(self, path):
     """Retrieves an item list for a specific path.
@@ -95,7 +97,10 @@ class WindowsShellItemGenerator(object):
 
 
 if __name__ == '__main__':
-  generator = WindowsShellItemGenerator()
+  specimens_path = os.path.join(os.getcwd(), 'specimens')
+  os.makedirs(specimens_path)
+
+  generator = WindowsShellItemGenerator(specimens_path)
 
   # Generate a file entry (directory) shell item list.
   testdir_path = os.path.join(os.getcwd(), 'testdir')
